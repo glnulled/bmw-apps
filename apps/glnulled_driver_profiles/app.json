@@ -1,0 +1,127 @@
+{
+  "id": "glnulled_driver_profiles",
+  "title": "Driver profiles",
+  "description": "The car's driver profiles: the list, new ones, renamed, deleted and the one in use",
+  "version": "1.0.0",
+  "vendor": "custom",
+  "loggingId": "GL00",
+  "iconGlyph": "DP",
+  "signals": {
+    "de.bmw.infotainment.personalization.UserAccountManager": {
+      "_instances": "de.bmw.infotainment.personalization.UserAccountManager",
+      "_methods": [
+        "createUserAccount",
+        "removeUserAccount"
+      ]
+    },
+    "de.bmw.infotainment.personalization.UserAccount": {
+      "_instances": "*",
+      "id": "r",
+      "name": "rw",
+      "type": "r"
+    },
+    "de.bmw.infotainment.personalization.SessionManager": {
+      "_instances": "de.bmw.infotainment.personalization.SessionManager",
+      "currentUserAccountReference": "r",
+      "_broadcasts": [
+        "currentUserOnChange"
+      ]
+    },
+    "de.bmw.infotainment.personalization.Authentication": {
+      "_instances": "de.bmw.infotainment.personalization.Authentication",
+      "_methods": [
+        "login"
+      ]
+    }
+  },
+  "screens": [
+    {
+      "name": "MAIN",
+      "kind": "canvas",
+      "title": "Driver profiles",
+      "buttons": [
+        [
+          "BTN_NEW",
+          "New profile"
+        ],
+        [
+          "BTN_SETTINGS",
+          "Settings"
+        ]
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "key": "kb_en",
+      "label": "English keyboard",
+      "type": "bool",
+      "default": true
+    },
+    {
+      "key": "kb_ru",
+      "label": "Russian keyboard",
+      "type": "bool",
+      "default": true
+    },
+    {
+      "key": "theme",
+      "label": "Colour theme",
+      "type": "choice",
+      "default": "m_tricolour",
+      "options": [
+        [
+          "m_red",
+          "M Red"
+        ],
+        [
+          "m_tricolour",
+          "M Tricolour"
+        ],
+        [
+          "ice",
+          "Ice White"
+        ],
+        [
+          "amber",
+          "Night Amber"
+        ]
+      ]
+    },
+    {
+      "key": "layout",
+      "label": "Screen layout",
+      "type": "choice",
+      "default": "full",
+      "options": [
+        [
+          "full",
+          "Full screen"
+        ],
+        [
+          "standard",
+          "Standard"
+        ]
+      ]
+    },
+    {
+      "key": "renderer",
+      "label": "Renderer",
+      "type": "choice",
+      "default": "auto",
+      "options": [
+        [
+          "auto",
+          "GPU 60 fps (default)"
+        ],
+        [
+          "software",
+          "Software"
+        ]
+      ]
+    }
+  ],
+  "fonts": [
+    "cyrillic"
+  ]
+}

@@ -1,0 +1,34 @@
+# BMW's SDK - extract it from your own head unit (kit/tools/extract_sdk.js), never commit it
+oap-sdk
+# the unit's SOME/IP catalog (copied from your unit for check_signals.py / sigdoc.py)
+reference/
+# build output - every .mgu contains BMW's SDK, so don't publish these either
+dist/
+*.mgu
+*.tgz
+# the emulator's and preview's app data
+/preview/
+# keys / local stuff
+*.pem
+*.key
+id_rsa*
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+.DS_Store
+.claude/
+kit/tools/.font-cache/
+kit/renderd/build/
+kit/renderd/protocol/*-protocol.c
+kit/renderd/protocol/*-client-protocol.h
+/kit/renderd/core
+# logs and captures pulled from the car
+/work/
+/captures/
+/backups/
+*.log
+*.pcap
+*.pcapng
+*.dlt
+*.core

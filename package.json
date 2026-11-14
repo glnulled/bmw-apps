@@ -1,0 +1,8 @@
+{
+  "name": "bmw-apps",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "test": "node kit/tools/run_tests.js"
+  }
+}

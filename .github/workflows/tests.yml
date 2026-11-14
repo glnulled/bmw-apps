@@ -1,0 +1,25 @@
+name: Tests
+
+# The kit runtime and the apps' synthetic checks, and every app through the builder (no SDK, renderer or car needed).
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: node kit/tools/run_tests.js
+      # every app.json through the builder: settings, screens, HMI resources (no SDK: preview only)
+      - run: for d in apps/*/; do python3 kit/tools/build.py --preview-only "$(basename "$d")"; done
