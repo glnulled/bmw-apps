@@ -29,5 +29,16 @@
         "oap-sdk"
       ]
     }
-  }
+  },
+  "tools": [
+    {
+      "id": "glnulled-cluster-slot",
+      "path": "kit/cluster-slot",
+      "title": "Cluster slot for Customizer",
+      "description": "Moves cluster-render's panel to slot 0x105, so the widgets and the media list stay on an M-layout cluster while Customizer shows the driving mode; installed with Customizer",
+      "mguHmi": [
+        "ID7"
+      ]
+    }
+  ]
 }

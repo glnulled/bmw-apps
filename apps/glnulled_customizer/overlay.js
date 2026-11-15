@@ -104,6 +104,17 @@ class Overlay {
         if (m.blink && st.blinkOn === false) this._hide('dscOff'); else this._show('dscOff');
     }
 
+    /**
+     * Every layer dropped, in the client too: it keeps each layer it made and makes them again at its next connect,
+     * so layers only forgotten here came back beside the new ones (two badges after Off and On).
+     */
+    clear() {
+        Object.keys(this.layers).forEach((n) => this.cr.drop(this.layers[n].ref));
+        this.layers = {};
+        this._key = this._dkey = null;
+        this.st.connected = false; this.st.layer = {};
+    }
+
     status() { return this.st; }
 }
 

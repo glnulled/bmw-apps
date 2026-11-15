@@ -112,8 +112,8 @@ class Customizer {
             this.log.info('customizer: on, cluster-render socket ' + (this.cr.path || '?'));
         } else if (!on && this._connected) {
             this._connected = false;
+            if (this.overlay) this.overlay.clear();   // before the close: the drops go while the socket is there
             this.cr.close();
-            if (this.overlay) { this.overlay.st.connected = false; this.overlay.layers = {}; this.overlay._key = this.overlay._dkey = null; }
             this.log.info('customizer: off: the connection to cluster-render closed, nothing of ours on the cluster');
         }
     }

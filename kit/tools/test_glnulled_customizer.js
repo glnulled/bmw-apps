@@ -216,6 +216,12 @@ const MODE = (name) => ({ displayModeDrivingExperience: name, actualValueModeDri
         assert.strictEqual(s._blinkTimer, null);
         s.config.change((c) => { c.mode.on = false; });
         assert(cr.ops.some((x) => x[0] === 'close'));
+        // Off drops every layer in the client (it makes again what it keeps), before the close; On makes one badge, not two
+        assert.strictEqual(Object.keys(cr.layers).length, 0, 'layers left in the client after Off: ' + Object.keys(cr.layers));
+        const names = cr.ops.map((x) => x[0]);
+        assert(names.lastIndexOf('drop') < names.lastIndexOf('close'), 'the drops go before the close');
+        s.config.change((c) => { c.mode.on = true; });
+        assert.strictEqual(Object.keys(cr.layers).length, 1, 'one badge after Off and On, got ' + Object.keys(cr.layers).length);
         s.stop();
     });
 
@@ -264,6 +270,14 @@ const MODE = (name) => ({ displayModeDrivingExperience: name, actualValueModeDri
             assert(states.has('shown') && states.has('hidden'), 'blinks on the stand-in: ' + [...states].join(','));
             await get('/act?do=drop');
             assert(await wait(() => s.overlay.status().connected && /^shown/.test(s.overlay.status().layer.mode || ''), 6000), 'back after the service restarted');
+            // Off and On twice: the client makes again only the layers of now (they piled up, one more badge each time)
+            for (let i = 0; i < 2; i++) {
+                s.config.change((c) => { c.mode.on = false; });
+                await new Promise((r) => setTimeout(r, 150));
+                s.config.change((c) => { c.mode.on = true; });
+                assert(await wait(() => s.overlay.status().connected && /^shown/.test(s.overlay.status().layer.mode || ''), 6000), 'back after Off and On');
+            }
+            assert.strictEqual(s.cr.layers.size, 2, 'the client keeps the badge and DSC OFF, got ' + s.cr.layers.size + ' layers');
             s.stop();
         } finally { srv.kill(); }
     });

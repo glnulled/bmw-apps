@@ -1,0 +1,20 @@
+{
+  "id": "glnulled-cluster-slot",
+  "kind": "tool",
+  "version": "1.0.0",
+  "title": "Cluster slot for Customizer",
+  "description": "Moves cluster-render's panel to slot 0x105, so the widgets and the media list stay on an M-layout cluster while Customizer shows the driving mode; installed with Customizer",
+  "mguHmi": ["ID7"],
+  "uninstallable": true,
+  "requires": { "mgu-deploy": "0.8.19", "cluster-render": "0.6.0" },
+  "files": [
+    { "path": "panel-slot.sh", "mode": "0755" },
+    { "path": "LICENSE", "mode": "0644" }
+  ],
+  "units": [],
+  "enable": [],
+  "recmgr": [],
+  "restart": [],
+  "activate": ["panel-slot.sh", "set"],
+  "deactivate": ["panel-slot.sh", "unset"]
+}

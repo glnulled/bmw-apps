@@ -19,6 +19,16 @@ It runs from the platform's start (`autostart`), so the cluster shows the mode w
   Nisipeanu ([robertnisipeanu/idrive-apps](https://github.com/robertnisipeanu/idrive-apps), not in this repository):
   `app.json` `requires` it, so the MGU Store installs it first from that source (one of the Store's default sources).
   Installed by hand (`deploy/push-to-car.sh`), install *Cluster renderer* and *Renderer* from the Store yourself.
+- **Cluster slot for Customizer** (`glnulled-cluster-slot`, [`kit/cluster-slot`](../../kit/cluster-slot)), a small
+  tool from this repository the Store installs with the app (`requires`). On a cluster coded to the M layout the KOMBI
+  shows only one of the slots 0x200 (the widgets on the right), 0x202 (the media source list) and 0x203
+  (cluster-render's own slot for the whole cluster): with the mode on the cluster the widgets went, the mode went
+  while the source list showed, and the list was pushed over to the HUD. The tool puts `panel_slot = 0x105` in the
+  unit's `/var/opt/cluster-render/cluster-render.local.conf` and starts cluster-render again: 0x105 is as large,
+  over the gauges and the map and under the widgets, and shares with none of them. It is the slot of the
+  navigation's maneuver box and the seat-belt warning, which the panel gives way to; cluster-render's guide hold is
+  off while the panel is there. A `panel_slot` already set there by hand is left alone; removing the tool removes
+  its line. Another cluster may want another slot: `kit/tools/probe_cluster_slots.sh` shows each one (below).
 - iDrive 7 (MGU). iDrive 8 has no target over the whole cluster.
 
 ## The page
@@ -43,8 +53,8 @@ Defaults: the box at x 1212, y 658, 192 x 62 (the cluster's own pixels, 1920 x 7
 - DSC (`stability.js`): *traction* from `statusDSCSwitchHMI` TRAKTIONSMODUS_EIN, `modeAvailabilityDSC` TRAKTION /
   TRAKTIONSOPTIMIERT_STUFE_n / MID, or the mode's availability "cut down by the driver"; *off* from DSC_AUS, KEINE or
   "switched off by the driver". Off wins.
-- cluster-render puts one scene over the whole cluster (its target `panel`, slot 0x203); the KOMBI draws it over its
-  gauges. The badge is an image layer (class `overlay`) written when what it shows changes, only the part that
+- cluster-render puts one scene over the whole cluster (its target `panel`: slot 0x203 as shipped, 0x105 with the
+  tool above); the KOMBI draws it over its gauges. The badge is an image layer (class `overlay`) written when what it shows changes, only the part that
   changed; DSC OFF is written once and blinks by its visibility alone (no pixels sent).
 - `data/customizer.json`: the settings; `data/glnulled_customizer.log`: the app's log, with every mode and DSC status
   the car sent.

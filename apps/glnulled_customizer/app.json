@@ -2,13 +2,14 @@
   "id": "glnulled_customizer",
   "title": "Customizer",
   "description": "The driving mode on the instrument cluster over the stock picture, with TRACTION and a blinking DSC OFF; through cluster-render",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "vendor": "custom",
   "loggingId": "GL01",
   "iconGlyph": "CU",
   "autostart": true,
   "requires": {
-    "cluster-render": "0.6.0"
+    "cluster-render": "0.6.0",
+    "glnulled-cluster-slot": "1.0.0"
   },
   "signals": {
     "de.bmw.infotainment.drivingexcitement.FES": {

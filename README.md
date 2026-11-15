@@ -30,6 +30,8 @@ In the Store on the car: Settings → **Add source** → `glnulled/bmw-apps`, th
 at the root makes it a *repo tree* source: the head unit builds every app in `apps/` from source with the kit in
 this repository, using the BMW SDK already on the unit, so no SDK and no built package is published here. The apps
 need a renderer (`"needs": ["renderer"]`): the Store's own mgu-render, or idrive7-apps' GPU renderer.
+`mgu-repo.json` also lists one tool, *Cluster slot for Customizer* (`kit/cluster-slot`), which the Store installs
+with Customizer (see [its README](apps/glnulled_customizer/README.md#needs)).
 
 ## Build and install by hand
 
@@ -68,6 +70,7 @@ To check an app's SOME/IP interfaces against your car, copy the unit's catalog t
 apps/<id>/            one app: app.json, main.js and its modules, README.md
 kit/runtime/          the apps' runtime: platform glue, drawing, SOME/IP, fonts, themes
 kit/tools/            build.py, emu.js (emulator), make_kit.py, check_signals.py, sigdoc.py, tests (test_*.js)
+kit/cluster-slot/     the Store tool that sets cluster-render's panel slot for Customizer (runs as root)
 kit/renderd/          the GPU renderer's source, for the emulator's draw engine only (GPL-3.0-or-later)
 kit/emu/              the emulator's page and draw engine (WebAssembly)
 kit/localization/     glyph atlases (Cyrillic, Korean, Chinese) and translation credits

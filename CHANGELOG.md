@@ -2,6 +2,18 @@
 
 ## Customizer (glnulled_customizer)
 
+### 1.0.1 (2026-11-16)
+
+- Off and On again left the earlier layers in cluster-render: its client makes again every layer it was given, and
+  Off only forgot them. One more badge was drawn over the first each time (four layers seen in the service's status
+  on a car). Off now drops the layers, then closes the connection.
+- Needs the new tool *Cluster slot for Customizer* (`glnulled-cluster-slot` 1.0.0, `kit/cluster-slot`), which the
+  Store installs with it: cluster-render's panel moves from slot 0x203 to 0x105. On the M-layout cluster the KOMBI
+  showed only one of 0x200 (the widgets on the right), 0x202 (the media source list) and 0x203, so the widgets went
+  while the mode showed, the mode went while the list showed, and the list jumped to the HUD. In 0x105 all three
+  show together (found with `kit/tools/probe_cluster_slots.sh`; 0x201 also pushes the widgets out, 0x111 and 0x104
+  are small windows, 0x220 and 0x250 show nothing).
+
 ### 1.0.0 (2026-11-16)
 
 First version in this repository and the MGU Store; 0.1.0 to 0.4.0 were tried in a car (an M-coded cluster,
@@ -43,6 +55,12 @@ Taken from [cauliflowermossgrape/idrive7-apps](https://github.com/cauliflowermos
   build, not only the Russian one.
 - `kit/runtime/locales/ko.tsv` / `ko.json`: Korean for Driver profiles' menu labels.
 - `kit/tools/run_tests.js`: runs every `kit/tools/test_*.js` (`npm test`).
+- `kit/cluster-slot` (`glnulled-cluster-slot` 1.0.0): a Store tool, listed in `mgu-repo.json` `tools`, that sets
+  cluster-render's `panel_slot` in the unit's `cluster-render.local.conf` when it is installed and takes its line
+  out when it is removed (`panel-slot.sh`, tested by `kit/tools/test_cluster_slot.js`).
+- `kit/tools/probe_cluster_slots.sh` with `cluster_slot_pattern.js`: shows a test picture (the slot's number, a
+  coordinate grid, coloured edges) in each of the cluster's slots in turn and reads from cluster-render's log what
+  the cluster took down meanwhile; the panel's slot is put back at the end.
 - No renderer of our own: `kit/renderd/prebuilt` (renderer 2.1.11 and the controller gate) is gone, and
   `kit/tools/make_kit.py` packs the apps and the install scripts only. The apps draw through the MGU Store's
   Renderer, which the Store keeps up to date; `kit/renderd` keeps its source for the emulator's draw engine.
