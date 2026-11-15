@@ -43,7 +43,7 @@ Write-Host "Copying the kit to the head unit ($Ip)..."
 $psi = New-Object System.Diagnostics.ProcessStartInfo
 $psi.FileName = (Get-Command ssh).Source
 $psi.Arguments = (($opts | ForEach-Object { if ($_ -match '\s') { '"' + $_ + '"' } else { $_ } }) -join ' ') +
-    " ""mkdir -p $dest && rm -rf $dest/apps && tar xzf - -C /var/opt && cd $dest && md5sum -c KIT_SUMS >/dev/null && echo 'kit copied + verified'"""
+    " ""mkdir -p $dest && rm -rf $dest/apps && (cd $dest && rm -f mgu-renderd mgu-inputgate.so foreground_gate.js hmi_template.js mgu-render-hmi.sh mgu-render-hmi-guard.sh LICENSE LICENSE.mgu-renderd) && tar xzf - -C /var/opt && cd $dest && md5sum -c KIT_SUMS >/dev/null && echo 'kit copied + verified'"""
 $psi.UseShellExecute = $false
 $psi.RedirectStandardInput = $true
 $p = [System.Diagnostics.Process]::Start($psi)

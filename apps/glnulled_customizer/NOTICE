@@ -1,0 +1,8 @@
+Customizer (glnulled_customizer)
+
+cluster_render_client.js is the Node client of cluster-render, from
+robertnisipeanu/idrive-apps (native/cluster-render/js), Copyright (C) 2026
+Robert Nisipeanu, licensed under the Mozilla Public License 2.0
+(https://mozilla.org/MPL/2.0/). It is used unchanged; its source is that file.
+
+Everything else in this folder is MIT, as the repository (LICENSE).

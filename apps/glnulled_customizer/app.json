@@ -1,0 +1,92 @@
+{
+  "id": "glnulled_customizer",
+  "title": "Customizer",
+  "description": "The driving mode on the instrument cluster over the stock picture, with TRACTION and a blinking DSC OFF; through cluster-render",
+  "version": "1.0.0",
+  "vendor": "custom",
+  "loggingId": "GL01",
+  "iconGlyph": "CU",
+  "autostart": true,
+  "requires": {
+    "cluster-render": "0.6.0"
+  },
+  "signals": {
+    "de.bmw.infotainment.drivingexcitement.FES": {
+      "_optional": "the driving mode and the stability control: none on the cluster",
+      "statusFESVehicleDynamicSwitchHMI": "rs",
+      "statusDSCSwitchHMI": "rs",
+      "modeAvailabilityDSC": "rs"
+    }
+  },
+  "screens": [
+    {
+      "name": "MAIN",
+      "kind": "canvas",
+      "title": "Customizer",
+      "buttons": [
+        [
+          "BTN_SETTINGS",
+          "Settings"
+        ]
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "key": "theme",
+      "label": "Colour theme",
+      "type": "choice",
+      "default": "m_tricolour",
+      "options": [
+        [
+          "m_red",
+          "M Red"
+        ],
+        [
+          "m_tricolour",
+          "M Tricolour"
+        ],
+        [
+          "ice",
+          "Ice White"
+        ],
+        [
+          "amber",
+          "Night Amber"
+        ]
+      ]
+    },
+    {
+      "key": "layout",
+      "label": "Screen layout",
+      "type": "choice",
+      "default": "full",
+      "options": [
+        [
+          "full",
+          "Full screen"
+        ],
+        [
+          "standard",
+          "Standard"
+        ]
+      ]
+    },
+    {
+      "key": "renderer",
+      "label": "Renderer",
+      "type": "choice",
+      "default": "auto",
+      "options": [
+        [
+          "auto",
+          "GPU 60 fps (default)"
+        ],
+        [
+          "software",
+          "Software"
+        ]
+      ]
+    }
+  ]
+}

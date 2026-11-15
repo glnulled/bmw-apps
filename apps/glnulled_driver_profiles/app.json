@@ -2,7 +2,7 @@
   "id": "glnulled_driver_profiles",
   "title": "Driver profiles",
   "description": "The car's driver profiles: the list, new ones, renamed, deleted and the one in use",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "vendor": "custom",
   "loggingId": "GL00",
   "iconGlyph": "DP",

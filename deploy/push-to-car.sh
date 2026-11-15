@@ -27,11 +27,12 @@ fi
 SSH+=("$HU")
 # remote commands start with LC_ALL=C: ssh sends the Mac's LANG/LC_*, which the unit lacks ("Failed to set default locale")
 # tar over ssh: the unit's busybox has no scp/sftp server in some builds
-# apps/ is replaced, not merged: old .mgu files left there would be installed too (old, then new)
+# apps/ is replaced, not merged: old .mgu files left there would be installed too (old, then new); a renderer an older
+# kit left there goes too (deploy-car.sh would install it again): the apps use the MGU Store's renderer
 # macOS tar (bsdtar) adds extended attributes (com.apple.provenance, ...) the unit's tar cannot restore
 TAR=(tar czf -)
 case $(tar --version 2>/dev/null) in *bsdtar*) TAR+=(--no-xattrs --no-mac-metadata --no-acls) ;; esac
-COPYFILE_DISABLE=1 "${TAR[@]}" -C "$KIT" . | "${SSH[@]}" "export LC_ALL=C; mkdir -p '$DEST' && rm -rf '$DEST/apps' && tar xzf - -C '$DEST' && cd '$DEST' && md5sum -c KIT_SUMS >/dev/null && echo 'kit copied + verified'"
+COPYFILE_DISABLE=1 "${TAR[@]}" -C "$KIT" . | "${SSH[@]}" "export LC_ALL=C; mkdir -p '$DEST' && rm -rf '$DEST/apps' && (cd '$DEST' && rm -f mgu-renderd mgu-inputgate.so foreground_gate.js hmi_template.js mgu-render-hmi.sh mgu-render-hmi-guard.sh LICENSE LICENSE.mgu-renderd) && tar xzf - -C '$DEST' && cd '$DEST' && md5sum -c KIT_SUMS >/dev/null && echo 'kit copied + verified'"
 if [ "$CMD" = restore ]; then
     "${SSH[@]}" -t "export LC_ALL=C; cd '$DEST' && sh deploy-car.sh restore"     # asks to type YES
 else

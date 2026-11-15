@@ -63,7 +63,7 @@ class LocalProfiles {
 
     _save() {
         // a new file renamed over the old one: a reset in the middle of a write leaves either
-        fs.mkdirSync(path.dirname(this.file), { recursive: true });
+        if (!fs.existsSync(path.dirname(this.file))) fs.mkdirSync(path.dirname(this.file));   // (no recursive on the car's Node 8)
         const tmp = this.file + '.tmp';
         fs.writeFileSync(tmp, JSON.stringify({ version: 1, seq: this._seq, profiles: this._items }, null, 1));
         fs.renameSync(tmp, this.file);

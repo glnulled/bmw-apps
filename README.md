@@ -18,6 +18,7 @@
 | App | What it does |
 |---|---|
 | [**Driver profiles**](apps/glnulled_driver_profiles/README.md) (`glnulled_driver_profiles`) | The car's own driver profiles without BMW ID / ConnectedDrive: the list with the profile in use, new profiles with a name typed on an English or Russian keyboard, rename, switch, delete one |
+| [**Customizer**](apps/glnulled_customizer/README.md) (`glnulled_customizer`) | The driving mode on the instrument cluster over the stock picture, for clusters coded to a layout that shows none, with TRACTION and a blinking DSC OFF; needs cluster-render |
 
 | | |
 |---|---|
@@ -35,6 +36,10 @@ need a renderer (`"needs": ["renderer"]`): the Store's own mgu-render, or idrive
 As in idrive7-apps (its [Quick start](https://github.com/cauliflowermossgrape/idrive7-apps#3-quick-start) has the
 details): Python 3.6+, Node.js 14+, root access to the head unit, and BMW's SDK extracted from your own unit.
 
+The kit packs the apps only, no renderer: they draw through the one the MGU Store installs and keeps up to date
+(Store → *Renderer*), and Customizer through *Cluster renderer*. Install those from the Store first; without the
+Renderer the apps run in software (a few frames a second).
+
 ```sh
 # BMW's SDK, from your own unit (never commit it)
 scp root@<unit>:'/usr/lib/oap-mainapp/preinstalled_apps/x_call@*.tgz' .
@@ -47,6 +52,11 @@ node kit/tools/emu.js glnulled_driver_profiles                 # live emulator: 
 deploy/make-car-kit.sh && HU=root@<unit> KEY=<ssh key> deploy/push-to-car.sh install
 ```
 
+Debugging on the car: `HU=root@<unit> KEY=<ssh key> kit/tools/pull_from_car.sh` copies the apps' data (logs,
+reports), cluster-render's status and log and the platform's app list into `work/car-<time>/` (`--catalog` also the
+SOME/IP catalog into `reference/`). Apps that draw on the cluster or the HUD can be run on the desk against
+`kit/tools/fake_cluster_render.js`, a stand-in of cluster-render (see Customizer's README).
+
 To check an app's SOME/IP interfaces against your car, copy the unit's catalog to `reference/`
 (`scp root@<unit>:/etc/oap/someip/someip-interfaces.json reference/`) and run `python3 kit/tools/check_signals.py`.
 
@@ -58,7 +68,7 @@ To check an app's SOME/IP interfaces against your car, copy the unit's catalog t
 apps/<id>/            one app: app.json, main.js and its modules, README.md
 kit/runtime/          the apps' runtime: platform glue, drawing, SOME/IP, fonts, themes
 kit/tools/            build.py, emu.js (emulator), make_kit.py, check_signals.py, sigdoc.py, tests (test_*.js)
-kit/renderd/          the GPU renderer (prebuilt/: the ready binary), GPL-3.0-or-later
+kit/renderd/          the GPU renderer's source, for the emulator's draw engine only (GPL-3.0-or-later)
 kit/emu/              the emulator's page and draw engine (WebAssembly)
 kit/localization/     glyph atlases (Cyrillic, Korean, Chinese) and translation credits
 deploy/               packing the car kit and installing it over SSH
@@ -71,7 +81,7 @@ mgu-repo.json         this repository as an MGU Store source
 1. `apps/<prefix>_<name>/` with `app.json` and `main.js` (format and API: section 6 of the idrive7-apps README,
    [Writing your own app](https://github.com/cauliflowermossgrape/idrive7-apps#6-writing-your-own-app)). Ids here
    start with `glnulled_`: app ids are global on the head unit.
-2. A `loggingId` of its own (4 characters): `GL00` is Driver profiles, the next one `GL01`.
+2. A `loggingId` of its own (4 characters): `GL00` Driver profiles, `GL01` Customizer, the next one `GL02`.
 3. SOME/IP interfaces in `app.json` → `signals`, checked with `python3 kit/tools/check_signals.py`.
 4. A test, `kit/tools/test_<id>.js` (`npm test` runs it), a `README.md` in the app's folder, a line in the table
    above and in `CHANGELOG.md`.
@@ -80,9 +90,11 @@ mgu-repo.json         this repository as an MGU Store source
 
 ## The kit
 
-`kit/` and `deploy/` come from idrive7-apps at `8681f50` (renderer 2.1.11), without its apps and their tests; the
-changes made here are listed in [CHANGELOG.md](CHANGELOG.md). To take a newer kit, copy its `kit/` and `deploy/` over
-these and keep those changes.
+`kit/` and `deploy/` come from idrive7-apps at `8681f50`, without its apps and their tests and without the prebuilt
+renderer (`kit/renderd/prebuilt`): the renderer is the MGU Store's, so its fixes reach the car with the Store's
+updates. `kit/renderd` keeps the renderer's source for the emulator's draw engine (`kit/emu`). The changes made here
+are listed in [CHANGELOG.md](CHANGELOG.md). To take a newer kit, copy its `kit/` and `deploy/` over these and keep
+those changes.
 
 ## License
 
